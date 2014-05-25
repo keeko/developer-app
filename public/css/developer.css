@@ -1,0 +1,99 @@
+body {
+	min-height: 2000px;
+	padding-top: 70px;
+}
+
+.swagger-section .footer {
+	display: none;
+}
+
+#resources_container {
+	width: auto;
+}
+
+a[data-toggle="collapse"] {
+	outline: none;
+}
+
+a[data-toggle="collapse"] > i {
+	transition: transform 0.2s linear;
+}
+
+a[data-toggle="collapse"].collapsed > i {
+	transform: rotate(-90deg);
+}
+
+#reference.panel-group .panel + .panel {
+    margin-top: 0;
+}
+
+#reference .panel {
+	border-top-width: 0;
+	border-radius: 0;
+}
+
+#reference .panel:first-child {
+	border-top-left-radius: 4px;
+	border-top-right-radius: 4px;
+	border-top-width: 1px;
+}
+
+#reference .panel:last-child {
+	border-bottom-left-radius: 4px;
+	border-bottom-right-radius: 4px;
+}
+
+.basepath {
+	font-size: 0.7em;
+	color: #999;
+}
+
+.operation-nav {
+	list-style-type: none;
+	padding-left: 35px;
+}
+
+.operation-nav li {
+	/*line-height: 1.8em;*/
+}
+
+.operation-nav .http_method {
+	font-size: 0.7em;
+	display: inline-block;
+	
+	width: 40px;
+	/*text-align: center;
+	vertical-align: middle;
+	padding: 2px 0px 2px;
+	border-radius: 2px;
+	height: 2.2em;*/
+}
+
+.operation-nav .path {
+	color: #333;
+}
+
+.operation-nav .put .http_method {
+	color: #C5862B;
+}
+
+.operation-nav .get .http_method {
+	color: #0F6AB4;
+}
+
+.operation-nav .post .http_method {
+	color: #10A54A;
+}
+
+.operation-nav .delete .http_method {
+	color: #A41E22;
+}
+
+.operation-nav .patch .http_method {
+	color: #D38042;
+}
+
+#resources h2 {
+	margin-top: 10px;
+	padding-top: 0;
+}
