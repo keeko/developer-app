@@ -1,0 +1,21 @@
+{
+	"keywords" : [
+		"keeko",
+		"api",
+		"apidoc",
+		"dev",
+		"developer"
+	],
+	"autoload" : {
+		"psr-4" : {
+			"keeko\\application\\developer\\" : "src"
+		}
+	},
+	"name" : "keeko/developer-app",
+	"type" : "keeko-app",
+	"description" : "App with developer information and API docs.",
+	"license" : "MIT",
+	"require" : {
+		"php" : ">=5.4"
+	}
+}
