@@ -1,4 +1,8 @@
 {
+	"name" : "keeko/developer-app",
+	"type" : "keeko-app",
+	"description" : "App with developer information and API docs.",
+	"license" : "MIT",
 	"keywords" : [
 		"keeko",
 		"api",
@@ -11,11 +15,19 @@
 			"keeko\\application\\developer\\" : "src"
 		}
 	},
-	"name" : "keeko/developer-app",
-	"type" : "keeko-app",
-	"description" : "App with developer information and API docs.",
-	"license" : "MIT",
 	"require" : {
-		"php" : ">=5.4"
+		"php" : ">=5.4",
+		"keeko/core" : "dev-master",
+		"composer/composer" : "@dev",
+		"propel/propel" : "@dev"
+	},
+	"extra" : {
+		"keeko" : {
+			"app" : {
+				"title" : "Developer Application",
+				"class" : "\\keeko\\application\\developer\\DeveloperApplication"
+			}
+		},
+		"local" : "../../"
 	}
 }
