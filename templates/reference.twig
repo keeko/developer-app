@@ -1,24 +1,24 @@
 <div class="row">
 	<div class="col-md-9">{{ content|raw }}</div>
-	<div class="col-md-3">
+	<div class="col-md-3" id="referenceParent">
 
 		<div class="panel-group" id="reference">
 			{% for module in modules %}
 			<div class="panel panel-default">
 				<div class="panel-heading">
 					<h4 class="panel-title">
-						<a data-toggle="collapse" data-parent="#reference" href="#collapse{{ module.module.getId() }}"><i class="fa fa-chevron-down"></i></a>			
-						<a href="{{ base }}reference{{ module.basepath }}">{{ module.title }}</a>
-						<span class="basepath">{{ module.basepath }}</span>
+						<a data-toggle="collapse" {% if module.slug != current %}class="collapsed"{% endif %} data-parent="#reference" href="#collapse{{ module.module.getId() }}"><i class="fa fa-chevron-down"></i></a>			
+						<a href="{{ base }}reference/{{ module.slug }}">{{ module.title }}</a>
+						<span class="slug">/{{ module.slug }}</span>
 					</h4>
 				</div>
-				<div id="collapse{{ module.module.getId() }}" class="panel-collapse collapse in">
+				<div id="collapse{{ module.module.getId() }}" class="panel-collapse collapse {% if module.slug == current %}in{% endif %}">
 					<div>
 						<ul class="operation-nav">
 							{% for nickname, route in module.routes %}
 							<li class="{{ route.method|lower }}">
-								<a class="http_method" href="#!{{ module.basepath }}/{{ nickname }}">{{ route.method }}</a>
-								<a class="path" href="#!{{ module.basepath }}/{{ nickname }}">{{ route.path }}</a>
+								<a class="http_method" href="{{ base }}reference/{{ module.slug }}#!{{ module.slug }}/{{ nickname }}">{{ route.method }}</a>
+								<a class="path" href="{{ base }}reference/{{ module.slug }}#!{{ module.slug }}/{{ nickname }}">{{ route.path }}</a>
 							</li>
 							{% endfor %}
 						</ul>
@@ -28,4 +28,8 @@
   			{% endfor %}
   		</div>
 	</div>
+	
+	<script>
+	$('#reference').css('width', $('#referenceParent').width());
+	</script>
 </div>

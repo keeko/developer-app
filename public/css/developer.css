@@ -1,14 +1,9 @@
 body {
-	min-height: 2000px;
 	padding-top: 70px;
 }
 
-.swagger-section .footer {
-	display: none;
-}
-
-#resources_container {
-	width: auto;
+#reference {
+	position: fixed;
 }
 
 a[data-toggle="collapse"] {
@@ -43,7 +38,7 @@ a[data-toggle="collapse"].collapsed > i {
 	border-bottom-right-radius: 4px;
 }
 
-.basepath {
+.slug {
 	font-size: 0.7em;
 	color: #999;
 }
@@ -93,7 +88,36 @@ a[data-toggle="collapse"].collapsed > i {
 	color: #D38042;
 }
 
-#resources h2 {
-	margin-top: 10px;
-	padding-top: 0;
+/* API Listing */
+
+#resources_container {
+	width: auto;
+	padding-left: 0;
+}
+
+#resources {
+	padding-left: 0;
+}
+
+.devdocs .swagger-section .swagger-ui-wrap ul#resources li.resource > div.heading:after {
+	content: ' ';
+	clear: both;
+	margin-bottom: 5px;
+	display: block;
+}
+
+.devdocs .swagger-section .swagger-ui-wrap ul#resources li.resource > div.heading .options {
+	margin-right: 0;
+}
+
+.devdocs .swagger-section .swagger-ui-wrap ul#resources li.resource div.heading h2 {
+	display: none;
+}
+
+#resources .endpoints {
+	padding-left: 0;
+}
+
+.swagger-section .footer {
+	display: none;
 }

@@ -17,6 +17,8 @@ use keeko\core\model\ModuleQuery;
 
 class DeveloperApplication extends AbstractApplication {
 	
+	private $modules;
+	
 	/* (non-PHPdoc)
 	 * @see \keeko\core\application\AbstractApplication::run()
 	*/
@@ -41,7 +43,7 @@ class DeveloperApplication extends AbstractApplication {
 			
 			switch ($route) {
 				case 'json':
-					$module = $this->findModuleByResourcePath($match['module']);
+					$module = $this->findModuleBySlug($match['module']);
 					
 					if ($module !== null) {
 						$extra = $module['package']->getExtra();
@@ -53,6 +55,7 @@ class DeveloperApplication extends AbstractApplication {
 				
 				case 'reference':
 				case 'module':
+					$current = '';
 					$content = $main;
 					if ($route == 'module') {
 						$scripts = [
@@ -70,18 +73,21 @@ class DeveloperApplication extends AbstractApplication {
 						
 						$css = ['components/swagger-ui/dist/css/screen.css'];
 						
+						$current = $match['module'];
 						$content = $twig->render('api.twig', [
 							'base' => $this->base,
-							'url' => $this->base . 'reference/' . $match['module'] . '.json'
+							'url' => $this->base . 'reference/' . $match['module'] . '.json',
+							'module' => $this->findModuleBySlug($match['module'])
 						]);
 					} else {
-						
+						$content = $twig->render('reference_index.twig');
 					}
 					
 					$main = $twig->render('reference.twig', [
 						'base' => $this->base,
 						'content' => $content,
-						'modules' => $this->loadModules()
+						'modules' => $this->loadModules(),
+						'current' => $current
 					]);
 					
 					break;
@@ -115,6 +121,9 @@ class DeveloperApplication extends AbstractApplication {
 	}
 	
 	private function loadModules() {
+		if (!empty($this->modules)) {
+			return $this->modules;
+		}
 		$modules = [];
 		$mods = ModuleQuery::create()->filterByApi(true)->find();
 		foreach ($mods as $mod) {
@@ -130,19 +139,20 @@ class DeveloperApplication extends AbstractApplication {
 			}
 			$modules[] = [
 				'title' => $mod->getTitle(),
-				'basepath' => $package->getExtra()['keeko']['module']['api']['resourcePath'],
+				'slug' => $mod->getSlug(),
 				'module' => $mod,
 				'package' => $package,
 				'routes' => $routes
 			];
 		}
+		$this->modules = $modules;
 		return $modules;
 	}
 	
-	private function findModuleByResourcePath($resourcePath) {
+	private function findModuleBySlug($slug) {
 		$modules = $this->loadModules();
 		foreach ($modules as $module) {
-			if ($module['basepath'] == '/' . $resourcePath) {
+			if ($module['slug'] == $slug) {
 				return $module;
 			}
 		}
