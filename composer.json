@@ -18,7 +18,7 @@
 	"require" : {
 		"php" : ">=5.4",
 		"keeko/composer-installer" : "*"
-	}
+	},
 	"require-dev": {
 		"keeko/core" : "dev-master",
 		"composer/composer" : "@dev",
