@@ -6,6 +6,10 @@ body {
 	position: fixed;
 }
 
+/*.affix {
+
+}*/
+
 a[data-toggle="collapse"] {
 	outline: none;
 }
@@ -45,11 +49,17 @@ a[data-toggle="collapse"].collapsed > i {
 
 .operation-nav {
 	list-style-type: none;
-	padding-left: 35px;
+	padding-left: 0;
+	max-height: 400px;
+	overflow-y: auto;
 }
 
 .operation-nav li {
 	/*line-height: 1.8em;*/
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	padding-left: 35px;
 }
 
 .operation-nav .http_method {
@@ -99,6 +109,11 @@ a[data-toggle="collapse"].collapsed > i {
 	padding-left: 0;
 }
 
+#resources .options li:first-child,
+#resources .options li:last-child {
+	display: none;
+}
+
 .devdocs .swagger-section .swagger-ui-wrap ul#resources li.resource > div.heading:after {
 	content: ' ';
 	clear: both;
@@ -108,6 +123,11 @@ a[data-toggle="collapse"].collapsed > i {
 
 .devdocs .swagger-section .swagger-ui-wrap ul#resources li.resource > div.heading .options {
 	margin-right: 0;
+}
+
+.devdocs .swagger-section .swagger-ui-wrap ul#resources li.resource > div.heading .options li:nth-child(3) {
+	border-right-width: 0;
+	padding-right: 0;
 }
 
 .devdocs .swagger-section .swagger-ui-wrap ul#resources li.resource div.heading h2 {

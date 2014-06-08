@@ -1,6 +1,6 @@
 <div class="row">
-	<div class="col-md-9">{{ content|raw }}</div>
-	<div class="col-md-3" id="referenceParent">
+	<div class="col-md-8">{{ content|raw }}</div>
+	<div class="col-md-4" id="referenceParent">
 
 		<div class="panel-group" id="reference">
 			{% for module in modules %}
@@ -18,7 +18,7 @@
 							{% for nickname, route in module.routes %}
 							<li class="{{ route.method|lower }}">
 								<a class="http_method" href="{{ base }}reference/{{ module.slug }}#!{{ module.slug }}/{{ nickname }}">{{ route.method }}</a>
-								<a class="path" href="{{ base }}reference/{{ module.slug }}#!{{ module.slug }}/{{ nickname }}">{{ route.path }}</a>
+								<a class="path" href="{{ base }}reference/{{ module.slug }}#!{{ module.slug }}/{{ nickname }}" title="{{ route.path }}">{{ route.path }}</a>
 							</li>
 							{% endfor %}
 						</ul>
