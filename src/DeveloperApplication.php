@@ -80,7 +80,7 @@ class DeveloperApplication extends AbstractApplication {
 							'module' => $this->findModuleBySlug($match['module'])
 						]);
 					} else {
-						$content = $twig->render('reference_index.twig');
+						$content = $twig->render('reference/index.twig');
 					}
 					
 					$main = $twig->render('reference.twig', [
@@ -97,17 +97,24 @@ class DeveloperApplication extends AbstractApplication {
 					break;
 					
 				case 'area':
-					$main = $twig->render(sprintf('%s.twig', $match['area']));
-					break;
-					
 				case 'topic':
-					$main = $twig->render(sprintf('%s/%s.twig', $match['area']));
+					$current = isset($match['topic']) ? $match['topic'] : 'index';
+					$content = $twig->render(sprintf('%s/%s.twig', $match['area'], $current), [
+						'base' => $this->base
+					]);
+					$main = $twig->render(sprintf('%s.twig', $match['area']), [
+						'content' => $content,
+						'menu' => $this->getMenu($match['area']),
+						'current' => $current,
+						'base' => $this->base
+					]);
 					break;
 			}
 	
 			$response->setContent($twig->render('main.twig', [
-				'base' => $this->base,
 				'root' => $this->root,
+				'base' => $this->base,
+				'destination' => $this->destination,
 				'app_root' => sprintf('%s/_keeko/apps/%s', $this->root, $this->model->getName()),
 				'styles' => $css,
 				'scripts' => $scripts,
@@ -173,5 +180,30 @@ class DeveloperApplication extends AbstractApplication {
 		return $routes;
 	}
 	
+	private function getMenu($area) {
+		$menu = [];
+		switch ($area) {
+			case 'guides':
+				$menu = [
+					'auth' => [
+						'title' => 'Authentication',
+						'chapters' => [
+							'basic' => 'Basic',
+							'token' => 'Token'
+						]
+					],
+					'error-handling' => [
+						'title' => 'Error Handling',
+						'chapters' => [
+							'http-status-codes' => 'HTTP-Status Codes',
+							'exceptions' => 'Exceptions'
+						],
+					]
+				];
+				break;
+		}
 
+		return $menu;
+	}
+	
 }

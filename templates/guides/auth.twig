@@ -1,0 +1,40 @@
+<h1>Authentication</h1>
+
+Authentication can be done in two main concepts: <b>Basic</b> and <b>Token</b>.
+
+<h2 id="basic">Basic Authentication</h2>
+
+<p>To use basic authentication, simply send the username and password.</p>
+
+<pre class="terminal">
+$ curl -u &lt;username&gt;:&lt;password&gt; %http-url-to%/api/...
+</pre>
+
+<h2 id="header">Token Authentication</h2>
+
+When successfully logged in, you are provided with a token. You can pass this token as a header 
+or as a cookie to authenticate a logged in user.
+
+<h3>1. Obtain a token</h3>
+
+<p>To get a token, by addressing the <a href="{{ base }}reference/auth#!/auth/login">login</a> API.</p>
+
+<pre class="terminal">
+$ curl -X POST --data '{"username":"&lt;username&gt;","password":"&lt;password&gt;"}' %http-url-to%/api/auth/login
+{"token":"&lt;your-token&gt;"}
+</pre>
+
+<h3>2a. Authentication via Header</h3>
+
+<p>Pass the token as header</p>
+
+<pre class="terminal">
+$ curl -H "Authorization: Bearer &lt;your-token&gt;" %http-url-to%/api/auth/logout
+{"success":true}
+</pre>
+
+<h3>2b. Authentication via Cookie</h3>
+
+<p>The token can also be passed in a cookie. Set the cookie with the name <var>Bearer</var>.</p>
+
+

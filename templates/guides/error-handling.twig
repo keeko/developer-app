@@ -1,0 +1,44 @@
+<h1>Error Handling</h1>
+
+Errors are shown in two formats: <b>HTTP-Status Codes</b> and <b>Exceptions</b>.
+
+<h2 id="http-status-codes">HTTP-Status Codes</h2>
+
+<p><a href="https://en.wikipedia.org/wiki/List_of_HTTP_status_codes" target="_blank">HTTP-Status Codes</a>
+are used to express errors covered by the HTTP protocol. Errors associated with the communication 
+via the HTTP protocol are expressed via HTTP error codes (see below). Endpoints define, which response 
+codes are sent, when errors occur that are expressable as HTTP status code.</p>
+
+<h3>Commonly used HTTP-Status Codes</h3>
+<p>A list of commonly used HTTP-Status codes.</p>
+
+<table class="table">
+	<thead>
+		<tr>
+			<th>Code</th>
+			<th>Usage</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>405</td>
+			<td>When the endpoint is not accessable with the used method.</td>
+		</tr>
+	</tbody>
+</table>
+
+<h2 id="exceptions">Exceptions</h2>
+
+<p>Code exceptions and errors not expressable via HTTP-Status codes are responded in the response body.
+The error object contains a <var>Code</var>, <var>Message</var> and a <var>Type</var>.</p>
+
+<pre>
+{
+	"error": {
+		"code": 1234,
+		"message": "Invalid Credentials",
+		"type": "\keeko\core\exceptions\InvalidCredentialsException"
+	}
+}
+</pre>
+
