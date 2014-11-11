@@ -32,6 +32,8 @@ class DeveloperApplication extends AbstractApplication {
 		$templatePath = sprintf('%s/%s/templates/', KEEKO_PATH_APPS, $this->model->getName());
 		$loader = new \Twig_Loader_Filesystem($templatePath);
 		$twig = new \Twig_Environment($loader);
+		
+		$prefs = $this->service->getPreferenceLoader()->getSystemPreferences();
 	
 		try {
 			$path = str_replace('//', '/', '/' . $path);
@@ -48,6 +50,7 @@ class DeveloperApplication extends AbstractApplication {
 					if ($module !== null) {
 						$extra = $module['package']->getExtra();
 						$api = $extra['keeko']['module']['api'];
+						$api['basePath'] = trim($prefs->get('plattform_api') . $module['slug'], '/');
 						
 						return new JsonResponse($api);
 					}
@@ -93,14 +96,17 @@ class DeveloperApplication extends AbstractApplication {
 					break;
 					
 				case 'index':
-					$main = $twig->render('index.twig');
+					$main = $twig->render('index.twig', [
+						'plattform_name' => $prefs->get('plattform_name')
+					]);
 					break;
 					
 				case 'area':
 				case 'topic':
 					$current = isset($match['topic']) ? $match['topic'] : 'index';
 					$content = $twig->render(sprintf('%s/%s.twig', $match['area'], $current), [
-						'base' => $this->base
+						'base' => $this->base,
+						'api_url' => $prefs->get('plattform_api')
 					]);
 					$main = $twig->render(sprintf('%s.twig', $match['area']), [
 						'content' => $content,
@@ -112,6 +118,7 @@ class DeveloperApplication extends AbstractApplication {
 			}
 	
 			$response->setContent($twig->render('main.twig', [
+				'plattform_name' => $prefs->get('plattform_name'),
 				'root' => $this->root,
 				'base' => $this->base,
 				'destination' => $this->destination,
@@ -134,7 +141,7 @@ class DeveloperApplication extends AbstractApplication {
 		$modules = [];
 		$mods = ModuleQuery::create()->filterByApi(true)->find();
 		foreach ($mods as $mod) {
-			$package = $this->packageManager->getModulePackage($mod->getName());
+			$package = $this->service->getPackageManager()->getModulePackage($mod->getName());
 			$routes = [];
 			foreach ($package->getExtra()['keeko']['module']['api']['apis'] as $route) {
 				foreach ($route['operations'] as $op) {

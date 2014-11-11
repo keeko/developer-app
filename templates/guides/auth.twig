@@ -7,7 +7,7 @@ Authentication can be done in two main concepts: <b>Basic</b> and <b>Token</b>.
 <p>To use basic authentication, simply send the username and password.</p>
 
 <pre class="terminal">
-$ curl -u &lt;username&gt;:&lt;password&gt; %http-url-to%/api/...
+$ curl -u &lt;username&gt;:&lt;password&gt; {{ api_url }}...
 </pre>
 
 <h2 id="header">Token Authentication</h2>
@@ -20,7 +20,7 @@ or as a cookie to authenticate a logged in user.
 <p>To get a token, by addressing the <a href="{{ base }}reference/auth#!/auth/login">login</a> API.</p>
 
 <pre class="terminal">
-$ curl -X POST --data '{"username":"&lt;username&gt;","password":"&lt;password&gt;"}' %http-url-to%/api/auth/login
+$ curl -X POST --data '{"username":"&lt;username&gt;","password":"&lt;password&gt;"}' {{ api_url }}auth/login
 {"token":"&lt;your-token&gt;"}
 </pre>
 
@@ -29,12 +29,12 @@ $ curl -X POST --data '{"username":"&lt;username&gt;","password":"&lt;password&g
 <p>Pass the token as header</p>
 
 <pre class="terminal">
-$ curl -H "Authorization: Bearer &lt;your-token&gt;" %http-url-to%/api/auth/logout
+$ curl -H "Authorization: Bearer &lt;your-token&gt;" {{ api_url }}auth/logout
 {"success":true}
 </pre>
 
 <h3>2b. Authentication via Cookie</h3>
 
-<p>The token can also be passed in a cookie. Set the cookie with the name <var>Bearer</var>.</p>
+<p>The token can also be passed in as a cookie. Set the cookie with the name <var>Bearer</var>.</p>
 
 
