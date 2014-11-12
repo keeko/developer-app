@@ -50,7 +50,7 @@ class DeveloperApplication extends AbstractApplication {
 					if ($module !== null) {
 						$extra = $module['package']->getExtra();
 						$api = $extra['keeko']['module']['api'];
-						$api['basePath'] = trim($prefs->get('plattform_api') . $module['slug'], '/');
+						$api['basePath'] = trim($prefs->getApiUrl() . $module['slug'], '/');
 						
 						return new JsonResponse($api);
 					}
@@ -97,7 +97,7 @@ class DeveloperApplication extends AbstractApplication {
 					
 				case 'index':
 					$main = $twig->render('index.twig', [
-						'plattform_name' => $prefs->get('plattform_name')
+						'plattform_name' => $prefs->getPlattformName()
 					]);
 					break;
 					
@@ -106,7 +106,7 @@ class DeveloperApplication extends AbstractApplication {
 					$current = isset($match['topic']) ? $match['topic'] : 'index';
 					$content = $twig->render(sprintf('%s/%s.twig', $match['area'], $current), [
 						'base' => $this->base,
-						'api_url' => $prefs->get('plattform_api')
+						'api_url' => $prefs->getApiUrl()
 					]);
 					$main = $twig->render(sprintf('%s.twig', $match['area']), [
 						'content' => $content,
@@ -118,7 +118,7 @@ class DeveloperApplication extends AbstractApplication {
 			}
 	
 			$response->setContent($twig->render('main.twig', [
-				'plattform_name' => $prefs->get('plattform_name'),
+				'plattform_name' => $prefs->getPlattformName(),
 				'root' => $this->root,
 				'base' => $this->base,
 				'destination' => $this->destination,

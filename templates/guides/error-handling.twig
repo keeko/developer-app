@@ -7,7 +7,8 @@ Errors are shown in two formats: <b>HTTP-Status Codes</b> and <b>Exceptions</b>.
 <p><a href="https://en.wikipedia.org/wiki/List_of_HTTP_status_codes" target="_blank">HTTP-Status Codes</a>
 are used to express errors covered by the HTTP protocol. Errors associated with the communication 
 via the HTTP protocol are expressed via HTTP error codes (see below). Endpoints define, which response 
-codes are sent, when errors occur that are expressable as HTTP status code.</p>
+codes are sent, when errors occur that are expressable as HTTP status code. Also these errors
+are also accompanied by an error response (see <a href="#exceptions">Exceptions</a> below).</p>
 
 <h3>Commonly used HTTP-Status Codes</h3>
 <p>A list of commonly used HTTP-Status codes.</p>
@@ -21,15 +22,27 @@ codes are sent, when errors occur that are expressable as HTTP status code.</p>
 	</thead>
 	<tbody>
 		<tr>
+			<td>403</td>
+			<td>Permission Denied</td>
+		</tr>
+		<tr>
+			<td>404</td>
+			<td>Resource not found</td>
+		</tr>
+		<tr>
 			<td>405</td>
 			<td>When the endpoint is not accessable with the used method.</td>
+		</tr>
+		<tr>
+			<td>500</td>
+			<td>Something went wrong</td>
 		</tr>
 	</tbody>
 </table>
 
 <h2 id="exceptions">Exceptions</h2>
 
-<p>Code exceptions and errors not expressable via HTTP-Status codes are responded in the response body.
+<p>Code exceptions and errors are responded in the response body.
 The error object contains a <var>Code</var>, <var>Message</var> and a <var>Type</var>.</p>
 
 <pre>
