@@ -8,7 +8,7 @@
 				<div class="panel-heading">
 					<h4 class="panel-title">
 						<a data-toggle="collapse" {% if module.slug != current %}class="collapsed"{% endif %} data-parent="#menu" href="#collapse{{ module.module.getId() }}"><i class="fa fa-chevron-down"></i></a>			
-						<a href="{{ base }}reference/{{ module.slug }}">{{ module.title }}</a>
+						<a href="{{ base }}/reference/{{ module.slug }}">{{ module.title }}</a>
 						<span class="slug">/{{ module.slug }}</span>
 					</h4>
 				</div>
@@ -17,8 +17,8 @@
 						<ul class="operation-nav">
 							{% for nickname, route in module.routes %}
 							<li class="{{ route.method|lower }}">
-								<a class="http_method" href="{{ base }}reference/{{ module.slug }}#!/{{ module.slug }}/{{ nickname }}">{{ route.method }}</a>
-								<a class="path" href="{{ base }}reference/{{ module.slug }}#!/{{ module.slug }}/{{ nickname }}" title="{{ route.path }}">{{ route.path }}</a>
+								<a class="http_method" href="{{ base }}/reference/{{ module.slug }}#!/{{ module.slug }}/{{ nickname }}">{{ route.method }}</a>
+								<a class="path" href="{{ base }}/reference/{{ module.slug }}#!/{{ module.slug }}/{{ nickname }}" title="{{ route.path }}">{{ route.path }}</a>
 							</li>
 							{% endfor %}
 						</ul>

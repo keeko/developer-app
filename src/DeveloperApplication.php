@@ -26,7 +26,7 @@ class DeveloperApplication extends AbstractApplication {
 	
 		$routes = $this->generateRoutes();
 		$response = new Response();
-		$context = new RequestContext($this->prefix);
+		$context = new RequestContext($this->getAppPath());
 		$matcher = new UrlMatcher($routes, $context);
 		
 		$templatePath = sprintf('%s/%s/templates/', KEEKO_PATH_APPS, $this->model->getName());
@@ -78,8 +78,8 @@ class DeveloperApplication extends AbstractApplication {
 						
 						$current = $match['module'];
 						$content = $twig->render('api.twig', [
-							'base' => $this->base,
-							'url' => $this->base . 'reference/' . $match['module'] . '.json',
+							'base' => $this->getAppUrl(),
+							'url' => $this->getAppUrl() . 'reference/' . $match['module'] . '.json',
 							'module' => $this->findModuleBySlug($match['module'])
 						]);
 					} else {
@@ -87,7 +87,7 @@ class DeveloperApplication extends AbstractApplication {
 					}
 					
 					$main = $twig->render('reference.twig', [
-						'base' => $this->base,
+						'base' => $this->getAppUrl(),
 						'content' => $content,
 						'modules' => $this->loadModules(),
 						'current' => $current
@@ -97,7 +97,8 @@ class DeveloperApplication extends AbstractApplication {
 					
 				case 'index':
 					$main = $twig->render('index.twig', [
-						'plattform_name' => $prefs->getPlattformName()
+						'plattform_name' => $prefs->getPlattformName(),
+						'base' => $this->getAppUrl()
 					]);
 					break;
 					
@@ -105,24 +106,24 @@ class DeveloperApplication extends AbstractApplication {
 				case 'topic':
 					$current = isset($match['topic']) ? $match['topic'] : 'index';
 					$content = $twig->render(sprintf('%s/%s.twig', $match['area'], $current), [
-						'base' => $this->base,
+						'base' => $this->getAppUrl(),
 						'api_url' => $prefs->getApiUrl()
 					]);
 					$main = $twig->render(sprintf('%s.twig', $match['area']), [
 						'content' => $content,
 						'menu' => $this->getMenu($match['area']),
 						'current' => $current,
-						'base' => $this->base
+						'base' => $this->getAppUrl()
 					]);
 					break;
 			}
 	
 			$response->setContent($twig->render('main.twig', [
 				'plattform_name' => $prefs->getPlattformName(),
-				'root' => $this->root,
-				'base' => $this->base,
-				'destination' => $this->destination,
-				'app_root' => sprintf('%s/_keeko/apps/%s', $this->root, $this->model->getName()),
+				'root' => $this->getRootUrl(),
+				'base' => $this->getAppUrl(),
+				'destination' => $this->getDestinationPath(),
+				'app_root' => sprintf('%s/_keeko/apps/%s', $this->getRootUrl(), $this->model->getName()),
 				'styles' => $css,
 				'scripts' => $scripts,
 				'main' => $main
@@ -179,7 +180,7 @@ class DeveloperApplication extends AbstractApplication {
 	
 		$routes->add('index', new Route('/'));
 		$routes->add('reference', new Route('/reference'));
-		$routes->add('json', new Route('/reference/{module}.json'));
+		$routes->add('json', new Route('/reference/{module}.json', [], ['module' => '.+']));
 		$routes->add('module', new Route('/reference/{module}'));
 		$routes->add('area', new Route('/{area}'));
 		$routes->add('topic', new Route('/{area}/{topic}'));
