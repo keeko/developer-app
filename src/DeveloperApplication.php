@@ -22,21 +22,18 @@ class DeveloperApplication extends AbstractApplication {
 	/* (non-PHPdoc)
 	 * @see \keeko\core\application\AbstractApplication::run()
 	*/
-	public function run(Request $request, $path) {
+	public function run(Request $request) {
 	
 		$routes = $this->generateRoutes();
 		$response = new Response();
 		$context = new RequestContext($this->getAppPath());
 		$matcher = new UrlMatcher($routes, $context);
 		
-		$templatePath = sprintf('%s/%s/templates/', KEEKO_PATH_APPS, $this->model->getName());
-		$loader = new \Twig_Loader_Filesystem($templatePath);
-		$twig = new \Twig_Environment($loader);
-		
+		$twig = $this->getTwig();
 		$prefs = $this->service->getPreferenceLoader()->getSystemPreferences();
 	
 		try {
-			$path = str_replace('//', '/', '/' . $path);
+			$path = str_replace('//', '/', '/' . $this->getDestinationPath());
 			$match = $matcher->match($path);
 			$main = print_r($match, true);
 			$route = $match['_route'];

@@ -6,6 +6,7 @@
 	<buildpathentry kind="src" path="vendor/symfony/finder"/>
 	<buildpathentry kind="src" path="vendor/symfony/yaml"/>
 	<buildpathentry kind="src" path="vendor/symfony/validator"/>
+	<buildpathentry kind="src" path="core/database"/>
 	<buildpathentry kind="con" path="org.eclipse.php.core.LANGUAGE"/>
 	<buildpathentry kind="src" path="vendor/composer/composer/src"/>
 	<buildpathentry kind="src" path="vendor/justinrainbow/json-schema/src"/>
