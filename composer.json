@@ -1,7 +1,7 @@
 {
 	"name" : "keeko/developer-app",
-	"type" : "keeko-app",
 	"description" : "App with developer information and API docs.",
+	"type" : "keeko-app",
 	"license" : "MIT",
 	"keywords" : [
 		"keeko",
@@ -10,6 +10,11 @@
 		"dev",
 		"developer"
 	],
+	"authors" : [{
+			"name" : "gossi",
+			"email" : "github@gos.si"
+		}
+	],
 	"autoload" : {
 		"psr-4" : {
 			"keeko\\application\\developer\\" : "src"
@@ -17,12 +22,21 @@
 	},
 	"require" : {
 		"php" : ">=5.4",
-		"keeko/composer-installer" : "*"
+		"keeko/composer-installer" : "*",
+		"puli/repository" : "^1.0@beta",
+		"fxp/composer-asset-plugin" : "~1.0",
+		"bower-asset/bootstrap" : "~3",
+		"bower-asset/font-awesome" : "~4",
+		"bower-asset/swagger-ui" : "~2"
 	},
-	"require-dev": {
+	"require-dev" : {
 		"keeko/core" : "dev-master",
 		"composer/composer" : "@dev",
-		"propel/propel" : "@dev"
+		"propel/propel" : "@dev",
+		"puli/composer-plugin" : "@beta",
+		"puli/twig-extension" : "@beta",
+		"puli/url-generator" : "@beta",
+		"puli/discovery" : "@beta"
 	},
 	"extra" : {
 		"keeko" : {
@@ -30,7 +44,6 @@
 				"title" : "Developer Application",
 				"class" : "\\keeko\\application\\developer\\DeveloperApplication"
 			}
-		},
-		"local" : "../../"
+		}
 	}
 }
