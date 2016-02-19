@@ -4,10 +4,13 @@
 <div class="swagger-section"><div id="swagger" class="swagger-ui-wrap"></div></div>
 
 <script type="text/javascript">
-$(function () {
-	window.swaggerUi = new SwaggerUi({
+document.addEventListener("DOMContentLoaded", function () {
+	swaggerUi = new SwaggerUi({
 		url: "{{ url }}",
 		dom_id: "swagger",
+		validatorUrl: null,
+		docExpansion: "list",
+		jsonEditor: false,
 // 		supportedSubmitMethods: ['get', 'post', 'put', 'delete'],
 		onComplete: function(swaggerApi, swaggerUi){
 // 			log("Loaded SwaggerUI");
@@ -25,16 +28,18 @@ $(function () {
 			$('pre code').each(function(i, e) {
 				hljs.highlightBlock(e)
 			});
-		},
+		}
 // 		onFailure: function(data) {
 // 			log("Unable to Load SwaggerUI");
 // 		},
-		docExpansion: "list"
     });
 
-	$('#reference .operation-nav a').on('click', function(e) {
+	$('.operation-nav a').on('click', function(e) {
 		window.setTimeout(function() {
 			Docs.shebang();
+			$('html, body').animate({
+		        scrollTop: $("#" + e.target.dataset.operation).offset().top - parseInt($('body').css('padding-top'))
+		    }, 500);
 		}, 10);
 	});
 
@@ -46,6 +51,6 @@ $(function () {
 // 			window.authorizations.add("key", new ApiKeyAuthorization("api_key", key, "query"));
 // 		}
 // 	})
-	window.swaggerUi.load();
+	swaggerUi.load();
 });
 </script>

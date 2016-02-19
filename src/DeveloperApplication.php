@@ -10,6 +10,8 @@ use Symfony\Component\Routing\Matcher\UrlMatcher;
 use Symfony\Component\Routing\RequestContext;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
+use phootwork\json\Json;
+use gossi\swagger\Swagger;
 
 /**
  * Developer Application
@@ -42,14 +44,27 @@ class DeveloperApplication extends AbstractApplication {
 				
 			switch ($route) {
 				case 'json':
+					$repo = $this->service->getResourceRepository();
 					$module = $this->findModuleBySlug($match['module']);
+
+					if ($module !== null && $module['model'] !== null) {
+						$components = parse_url($prefs->getApiUrl() . $module['slug']);
 						
-					if ($module !== null) {
-						$extra = $module['package']->getExtra();
-						$api = $extra['keeko']['module']['api'];
-						$api['basePath'] = trim($prefs->getApiUrl() . $module['slug'], '/');
-		
-						return new JsonResponse($api);
+						$prefs = $this->service->getPreferenceLoader()->getSystemPreferences();
+						$model = $module['model'];
+						$filename = sprintf('/packages/%s/api.json', $model->getName());
+						$json = Json::decode($repo->get($filename)->getBody());
+						$swagger = new Swagger($json);
+						$swagger->getInfo()->setVersion($prefs->getApiVersion());
+						$swagger->setHost($components['host']);
+						$swagger->setBasePath($components['path']);
+						$swagger->getSchemes()->add($components['scheme']);
+						$swagger->getConsumes()->add('application/vnd.api+json');
+						$swagger->getProduces()->add('application/vnd.api+json');
+						
+						$response = new JsonResponse($swagger->toArray());
+						$response->setEncodingOptions(Json::HEX_TAG | Json::HEX_APOS | Json::HEX_AMP | Json::HEX_QUOT | Json::UNESCAPED_SLASHES);
+						return $response;
 					}
 					break;
 		
@@ -59,18 +74,19 @@ class DeveloperApplication extends AbstractApplication {
 					$content = $main;
 					if ($route == 'module') {
 						$scripts = [
-							'/assets/swagger-ui/dist/lib/shred.bundle.js',
+							'/assets/jquery-migrate/jquery-migrate.min.js',
 							'/assets/swagger-ui/dist/lib/jquery.slideto.min.js',
 							'/assets/swagger-ui/dist/lib/jquery.wiggle.min.js',
 							'/assets/swagger-ui/dist/lib/jquery.ba-bbq.min.js',
-							'/assets/swagger-ui/dist/lib/handlebars-1.0.0.js',
+							'/assets/swagger-ui/dist/lib/handlebars-2.0.0.js',
 							'/assets/swagger-ui/dist/lib/underscore-min.js',
 							'/assets/swagger-ui/dist/lib/backbone-min.js',
-							'/assets/swagger-ui/dist/lib/swagger.js',
 							'/assets/swagger-ui/dist/swagger-ui.min.js',
-							'/assets/swagger-ui/dist/lib/highlight.7.3.pack.js'
+							'/assets/swagger-ui/dist/lib/highlight.7.3.pack.js',
+							'/assets/swagger-ui/dist/lib/jsoneditor.min.js',
+							'/assets/swagger-ui/dist/lib/marked.js'
 						];
-
+						
 						$css = [
 							'/assets/swagger-ui/dist/css/screen.css'
 						];
@@ -78,7 +94,7 @@ class DeveloperApplication extends AbstractApplication {
 						$current = $match['module'];
 						$content = $this->render('/keeko/developer-app/templates/api.twig', [
 							'base' => $this->getAppUrl(),
-							'url' => $this->getAppUrl() . 'reference/' . $match['module'] . '.json',
+							'url' => $this->getAppUrl() . '/reference/' . $match['module'] . '.json',
 							'module' => $this->findModuleBySlug($match['module'])
 						]);
 					} else {
@@ -139,25 +155,37 @@ class DeveloperApplication extends AbstractApplication {
 			return $this->modules;
 		}
 		$modules = [];
-		$mods = ModuleQuery::create()->filterByApi(true)->find();
-		foreach ($mods as $mod) {
-			$package = $this->service->getPackageManager()->getModulePackage($mod->getName());
-			$routes = [];
-			foreach ($package->getExtra()['keeko']['module']['api']['apis'] as $route) {
-				foreach ($route['operations'] as $op) {
-					$routes[str_replace('-', '_', $op['nickname'])] = [
-						'method' => $op['method'],
-						'path' => $route['path']
-					];
+		$models = ModuleQuery::create()->filterByApi(true)->find();
+		$repo = $this->service->getResourceRepository();
+		
+		foreach ($models as $model) {
+			$package = $this->service->getPackageManager()->getPackage($model->getName());
+			$filename = sprintf('/packages/%s/api.json', $model->getName());
+			if ($repo->contains($filename)) {
+				$routes = [];
+				$json = Json::decode($repo->get($filename)->getBody());
+				$swagger = new Swagger($json);
+				foreach ($swagger->getPaths() as $path) {
+					/* @var $path Path */
+					foreach (Swagger::$METHODS as $method) {
+						if ($path->hasOperation($method)) {
+							$op = $path->getOperation($method);
+							$actionName = $op->getOperationId();
+							$routes[str_replace('-', '_', $actionName)] = [
+								'method' => $method,
+								'path' => $path->getPath()
+							];
+						}
+					}
 				}
+				$modules[] = [
+					'title' => $model->getTitle(),
+					'slug' => $package->getKeeko()->getModule()->getSlug(),
+					'model' => $model,
+// 					'package' => ,
+					'routes' => $routes
+				];
 			}
-			$modules[] = [
-				'title' => $mod->getTitle(),
-				'slug' => $mod->getSlug(),
-				'module' => $mod,
-				'package' => $package,
-				'routes' => $routes
-			];
 		}
 		$this->modules = $modules;
 		return $modules;

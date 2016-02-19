@@ -27,7 +27,8 @@
 		"fxp/composer-asset-plugin" : "~1.0",
 		"bower-asset/bootstrap" : "~3",
 		"bower-asset/font-awesome" : "~4",
-		"bower-asset/swagger-ui" : "~2"
+		"bower-asset/swagger-ui" : "~2",
+		"bower-asset/jquery-migrate": "~1"
 	},
 	"require-dev" : {
 		"keeko/core" : "dev-master",

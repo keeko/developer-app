@@ -1,24 +1,24 @@
 <div class="row">
 	<div class="col-md-8">{{ content|raw }}</div>
-	<div class="col-md-4" id="referenceParent">
+	<div class="col-md-4">
 
 		<div class="panel-group" id="menu">
 			{% for module in modules %}
 			<div class="panel panel-default">
 				<div class="panel-heading">
 					<h4 class="panel-title">
-						<a data-toggle="collapse" {% if module.slug != current %}class="collapsed"{% endif %} data-parent="#menu" href="#collapse{{ module.module.getId() }}"><i class="fa fa-chevron-down"></i></a>			
+						<a data-toggle="collapse" {% if module.slug != current %}class="collapsed"{% endif %} data-parent="#menu" href="#collapse{{ module.model.getId() }}"><i class="fa fa-chevron-down"></i></a>			
 						<a href="{{ base }}/reference/{{ module.slug }}">{{ module.title }}</a>
 						<span class="slug">/{{ module.slug }}</span>
 					</h4>
 				</div>
-				<div id="collapse{{ module.module.getId() }}" class="panel-collapse collapse {% if module.slug == current %}in{% endif %}">
+				<div id="collapse{{ module.model.getId() }}" class="panel-collapse collapse {% if module.slug == current %}in{% endif %}">
 					<div>
 						<ul class="operation-nav">
 							{% for nickname, route in module.routes %}
 							<li class="{{ route.method|lower }}">
-								<a class="http_method" href="{{ base }}/reference/{{ module.slug }}#!/{{ module.slug }}/{{ nickname }}">{{ route.method }}</a>
-								<a class="path" href="{{ base }}/reference/{{ module.slug }}#!/{{ module.slug }}/{{ nickname }}" title="{{ route.path }}">{{ route.path }}</a>
+								<a class="http_method" href="{{ base }}/reference/{{ module.slug }}#!/{{ module.slug }}/{{ nickname }}" data-operation="{{ module.slug }}_{{ nickname }}">{{ route.method|upper }}</a>
+								<a class="path" href="{{ base }}/reference/{{ module.slug }}#!/{{ module.slug }}/{{ nickname }}" data-operation="{{ module.slug }}_{{ nickname }}" title="{{ route.path }}">{{ route.path }}</a>
 							</li>
 							{% endfor %}
 						</ul>
@@ -27,9 +27,11 @@
   			</div>
   			{% endfor %}
   		</div>
+  		
+  		<script>
+		window.addEventListener('DOMContentLoaded', function() {
+			$('#menu').css('width', $('#menu').parent().width())
+		});
+  		</script>
 	</div>
-	
-	<script>
-	$('#reference').css('width', $('#referenceParent').width());
-	</script>
 </div>

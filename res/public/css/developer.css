@@ -3,13 +3,17 @@ body {
 	padding-bottom: 70px;
 }
 
-#reference {
+/*#reference {
 	position: fixed;
-}
+}*/
 
 /*.affix {
 
 }*/
+
+#menu {
+	position: fixed;
+}
 
 a[data-toggle="collapse"] {
 	outline: none;
@@ -101,6 +105,10 @@ a[data-toggle="collapse"].collapsed > i {
 
 /* API Listing */
 
+#api_info {
+	display: none;
+}
+
 #resources_container {
 	width: auto;
 	padding-left: 0;
@@ -110,8 +118,9 @@ a[data-toggle="collapse"].collapsed > i {
 	padding-left: 0;
 }
 
-#resources .options li:first-child,
-#resources .options li:last-child {
+#resources .options li:first-child
+/*#resources .options li:last-child*/ 
+{
 	display: none;
 }
 
