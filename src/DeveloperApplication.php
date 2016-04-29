@@ -1,8 +1,10 @@
 <?php
 namespace keeko\application\developer;
 
+use gossi\swagger\Swagger;
 use keeko\core\model\ModuleQuery;
-use keeko\core\package\AbstractApplication;
+use keeko\framework\foundation\AbstractApplication;
+use phootwork\json\Json;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -10,8 +12,6 @@ use Symfony\Component\Routing\Matcher\UrlMatcher;
 use Symfony\Component\Routing\RequestContext;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
-use phootwork\json\Json;
-use gossi\swagger\Swagger;
 
 /**
  * Developer Application
@@ -201,7 +201,7 @@ class DeveloperApplication extends AbstractApplication {
 	
 		return null;
 	}
-	
+
 	private function generateRoutes() {
 		$routes = new RouteCollection();
 		$routes->add('index', new Route('/'));

@@ -57,6 +57,7 @@ a[data-toggle="collapse"].collapsed > i {
 	padding-left: 0;
 	max-height: 400px;
 	overflow-y: auto;
+	margin: 0;
 }
 
 .operation-nav li {
@@ -65,6 +66,10 @@ a[data-toggle="collapse"].collapsed > i {
 	text-overflow: ellipsis;
 	white-space: nowrap;
 	padding-left: 35px;
+}
+
+.operation-nav li:last-child {
+	margin-bottom: 5px;
 }
 
 .operation-nav .http_method {

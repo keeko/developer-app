@@ -23,15 +23,16 @@
 	"require" : {
 		"php" : ">=5.4",
 		"keeko/composer-installer" : "*",
-		"puli/repository" : "^1.0@beta",
 		"fxp/composer-asset-plugin" : "~1.0",
+		"puli/repository" : "^1.0@beta",
 		"bower-asset/bootstrap" : "~3",
 		"bower-asset/font-awesome" : "~4",
 		"bower-asset/swagger-ui" : "~2",
-		"bower-asset/jquery-migrate": "~1"
+		"bower-asset/jquery-migrate" : "~1"
 	},
 	"require-dev" : {
-		"keeko/core" : "dev-master",
+		"keeko/framework" : "dev-master",
+		"keeko/core" : "@dev",
 		"composer/composer" : "@dev",
 		"propel/propel" : "@dev",
 		"puli/composer-plugin" : "@beta",
