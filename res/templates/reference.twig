@@ -17,8 +17,8 @@
 						<ul class="operation-nav">
 							{% for nickname, route in module.routes %}
 							<li class="{{ route.method|lower }}">
-								<a class="http_method" href="{{ base }}/reference/{{ module.slug }}#!/{{ module.slug }}/{{ nickname }}" data-operation="{{ module.slug }}_{{ nickname }}">{{ route.method|upper }}</a>
-								<a class="path" href="{{ base }}/reference/{{ module.slug }}#!/{{ module.slug }}/{{ nickname }}" data-operation="{{ module.slug }}_{{ nickname }}" title="{{ route.path }}">{{ route.path }}</a>
+								<a class="http_method" href="{{ base }}/reference/{{ module.slug }}#!/default/{{ nickname }}" data-operation="default_{{ nickname }}">{{ route.method|upper }}</a>
+								<a class="path" href="{{ base }}/reference/{{ module.slug }}#!/default/{{ nickname }}" data-operation="default_{{ nickname }}" title="{{ route.path }}">{{ route.path }}</a>
 							</li>
 							{% endfor %}
 						</ul>

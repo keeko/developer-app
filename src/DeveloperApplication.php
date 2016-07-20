@@ -15,12 +15,12 @@ use Symfony\Component\Routing\RouteCollection;
 
 /**
  * Developer Application
- * 
+ *
  * @license MIT
  * @author gossi
  */
 class DeveloperApplication extends AbstractApplication {
-	
+
 	private $modules;
 
 	/**
@@ -29,19 +29,18 @@ class DeveloperApplication extends AbstractApplication {
 	public function run(Request $request) {
 		$routes = $this->generateRoutes();
 		$response = new Response();
-		$context = new RequestContext($this->getAppPath());
+		$context = new RequestContext($this->uri->getBasepath());
 		$matcher = new UrlMatcher($routes, $context);
 
 		$prefs = $this->service->getPreferenceLoader()->getSystemPreferences();
-		
+
 		try {
-			$path = str_replace('//', '/', '/' . $this->getDestinationPath());
-			$match = $matcher->match($path);
+			$match = $matcher->match($this->getDestination());
 			$main = print_r($match, true);
 			$route = $match['_route'];
 			$css = [];
 			$scripts = [];
-				
+
 			switch ($route) {
 				case 'json':
 					$repo = $this->service->getResourceRepository();
@@ -49,7 +48,7 @@ class DeveloperApplication extends AbstractApplication {
 
 					if ($module !== null && $module['model'] !== null) {
 						$components = parse_url($prefs->getApiUrl() . $module['slug']);
-						
+
 						$prefs = $this->service->getPreferenceLoader()->getSystemPreferences();
 						$model = $module['model'];
 						$filename = sprintf('/packages/%s/api.json', $model->getName());
@@ -61,13 +60,13 @@ class DeveloperApplication extends AbstractApplication {
 						$swagger->getSchemes()->add($components['scheme']);
 						$swagger->getConsumes()->add('application/vnd.api+json');
 						$swagger->getProduces()->add('application/vnd.api+json');
-						
+
 						$response = new JsonResponse($swagger->toArray());
 						$response->setEncodingOptions(Json::HEX_TAG | Json::HEX_APOS | Json::HEX_AMP | Json::HEX_QUOT | Json::UNESCAPED_SLASHES);
 						return $response;
 					}
 					break;
-		
+
 				case 'reference':
 				case 'module':
 					$current = '';
@@ -86,37 +85,37 @@ class DeveloperApplication extends AbstractApplication {
 							'/assets/swagger-ui/dist/lib/jsoneditor.min.js',
 							'/assets/swagger-ui/dist/lib/marked.js'
 						];
-						
+
 						$css = [
 							'/assets/swagger-ui/dist/css/screen.css'
 						];
-		
+
 						$current = $match['module'];
 						$content = $this->render('/keeko/developer-app/templates/api.twig', [
-							'base' => $this->getAppUrl(),
-							'url' => $this->getAppUrl() . '/reference/' . $match['module'] . '.json',
+							'base' => $this->getBaseUrl(),
+							'url' => $this->getBaseUrl() . '/reference/' . $match['module'] . '.json',
 							'module' => $this->findModuleBySlug($match['module'])
 						]);
 					} else {
 						$content = $this->render('/keeko/developer-app/templates/reference/index.twig');
 					}
-						
+
 					$main = $this->render('/keeko/developer-app/templates/reference.twig', [
-						'base' => $this->getAppUrl(),
+						'base' => $this->getBaseUrl(),
 						'content' => $content,
 						'modules' => $this->loadModules(),
 						'current' => $current
 					]);
-						
+
 					break;
-						
+
 				case 'index':
 					$main = $this->render('/keeko/developer-app/templates/index.twig', [
 						'plattform_name' => $prefs->getPlattformName(),
-						'base' => $this->getAppUrl()
+						'base' => $this->getBaseUrl()
 					]);
 					break;
-						
+
 				case 'area':
 				case 'topic':
 					$current = isset($match['topic']) ? $match['topic'] : 'index';
@@ -135,21 +134,20 @@ class DeveloperApplication extends AbstractApplication {
 
 			$response->setContent($this->render('/keeko/developer-app/templates/main.twig', [
 				'plattform_name' => $prefs->getPlattformName(),
-				'root' => $this->getRootUrl(),
-				'base' => $this->getAppUrl(),
-				'destination' => $this->getDestinationPath(),
-				'app_root' => sprintf('%s/_keeko/apps/%s', $this->getRootUrl(), $this->model->getName()),
+				'root' => $this->getBaseUrl(),
+				'base' => $this->getBaseUrl(),
+				'destination' => $this->getDestination(),
 				'styles' => $css,
 				'scripts' => $scripts,
 				'main' => $main
 			]));
-			
+
 		} catch (ResourceNotFoundException $e) {
 			$response->setStatusCode(Response::HTTP_NOT_FOUND);
 		}
 		return $response;
 	}
-		
+
 	private function loadModules() {
 		if (!empty($this->modules)) {
 			return $this->modules;
@@ -157,7 +155,7 @@ class DeveloperApplication extends AbstractApplication {
 		$modules = [];
 		$models = ModuleQuery::create()->filterByApi(true)->find();
 		$repo = $this->service->getResourceRepository();
-		
+
 		foreach ($models as $model) {
 			$package = $this->service->getPackageManager()->getPackage($model->getName());
 			$filename = sprintf('/packages/%s/api.json', $model->getName());
@@ -190,7 +188,7 @@ class DeveloperApplication extends AbstractApplication {
 		$this->modules = $modules;
 		return $modules;
 	}
-	
+
 	private function findModuleBySlug($slug) {
 		$modules = $this->loadModules();
 		foreach ($modules as $module) {
@@ -198,7 +196,7 @@ class DeveloperApplication extends AbstractApplication {
 				return $module;
 			}
 		}
-	
+
 		return null;
 	}
 
@@ -210,10 +208,10 @@ class DeveloperApplication extends AbstractApplication {
 		$routes->add('module', new Route('/reference/{module}'));
 		$routes->add('area', new Route('/{area}'));
 		$routes->add('topic', new Route('/{area}/{topic}'));
-	
+
 		return $routes;
 	}
-	
+
 	private function getMenu($area) {
 		$menu = [];
 		switch ($area) {
@@ -236,7 +234,7 @@ class DeveloperApplication extends AbstractApplication {
 			];
 			break;
 		}
-	
+
 		return $menu;
 	}
 }

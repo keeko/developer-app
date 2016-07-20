@@ -48,6 +48,16 @@
             "installer": "composer",
             "env": "dev"
         },
+        "egeloen/http-adapter": {
+            "install-path": "vendor/egeloen/http-adapter",
+            "installer": "composer",
+            "env": "dev"
+        },
+        "flow/jsonpath": {
+            "install-path": "vendor/flow/jsonpath",
+            "installer": "composer",
+            "env": "dev"
+        },
         "fxp/composer-asset-plugin": {
             "install-path": "vendor/fxp/composer-asset-plugin",
             "installer": "composer"
@@ -59,6 +69,11 @@
         },
         "gossi/swagger": {
             "install-path": "vendor/gossi/swagger",
+            "installer": "composer",
+            "env": "dev"
+        },
+        "igorw/get-in": {
+            "install-path": "vendor/igorw/get-in",
             "installer": "composer",
             "env": "dev"
         },
@@ -83,6 +98,11 @@
         },
         "monolog/monolog": {
             "install-path": "vendor/monolog/monolog",
+            "installer": "composer",
+            "env": "dev"
+        },
+        "mustangostang/spyc": {
+            "install-path": "vendor/mustangostang/spyc",
             "installer": "composer",
             "env": "dev"
         },
@@ -111,8 +131,18 @@
             "installer": "composer",
             "env": "dev"
         },
+        "piwik/device-detector": {
+            "install-path": "vendor/piwik/device-detector",
+            "installer": "composer",
+            "env": "dev"
+        },
         "propel/propel": {
             "install-path": "vendor/propel/propel",
+            "installer": "composer",
+            "env": "dev"
+        },
+        "psr/http-message": {
+            "install-path": "vendor/psr/http-message",
             "installer": "composer",
             "env": "dev"
         },
@@ -161,6 +191,11 @@
         },
         "seld/phar-utils": {
             "install-path": "vendor/seld/phar-utils",
+            "installer": "composer",
+            "env": "dev"
+        },
+        "swiftmailer/swiftmailer": {
+            "install-path": "vendor/swiftmailer/swiftmailer",
             "installer": "composer",
             "env": "dev"
         },
@@ -260,6 +295,16 @@
         "webmozart/path-util": {
             "install-path": "vendor/webmozart/path-util",
             "installer": "composer"
+        },
+        "willdurand/geocoder": {
+            "install-path": "vendor/willdurand/geocoder",
+            "installer": "composer",
+            "env": "dev"
+        },
+        "zendframework/zend-diactoros": {
+            "install-path": "vendor/zendframework/zend-diactoros",
+            "installer": "composer",
+            "env": "dev"
         }
     }
 }
