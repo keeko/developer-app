@@ -21,11 +21,11 @@
 		}
 	},
 	"require" : {
-		"php" : ">=5.4",
+		"php" : ">=5.5",
 		"keeko/composer-installer" : "*",
 		"fxp/composer-asset-plugin" : "~1.0",
 		"puli/repository" : "^1.0@beta",
-		"bower-asset/jquery": "~2.1",
+		"bower-asset/jquery" : "~2.1",
 		"bower-asset/bootstrap" : "~3",
 		"bower-asset/font-awesome" : "~4",
 		"bower-asset/swagger-ui" : "~2",
