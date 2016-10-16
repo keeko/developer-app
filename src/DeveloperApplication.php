@@ -120,14 +120,14 @@ class DeveloperApplication extends AbstractApplication {
 				case 'topic':
 					$current = isset($match['topic']) ? $match['topic'] : 'index';
 					$content = $this->render(sprintf('/keeko/developer-app/templates/%s/%s.twig', $match['area'], $current), [
-						'base' => $this->getAppUrl(),
+						'base' => $this->getBaseUrl(),
 						'api_url' => $prefs->getApiUrl()
 					]);
 					$main = $this->render(sprintf('/keeko/developer-app/templates/%s.twig', $match['area']), [
 						'content' => $content,
 						'menu' => $this->getMenu($match['area']),
 						'current' => $current,
-						'base' => $this->getAppUrl()
+						'base' => $this->getBaseUrl()
 					]);
 					break;
 			}
